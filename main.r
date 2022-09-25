@@ -59,7 +59,7 @@ xyplot(T02_WEIGHT ~ T02_DRINK|T02_AGE_2,
 ###############음주량 - BMI##################
 xyplot(T02_BMI ~ T02_DRINK|T02_AGE_2,
        data = KRHEAL,
-       main = 'Weight according to the amount of alcohol consumed by age group',
+       main = 'Weight according to the alcohol intake',
        xlab = 'the amount of alcohol consumed',
        ylab = 'BMI(kg/m^2)',
        layout = c(5,1))
@@ -74,7 +74,7 @@ densityplot(~T02_BMI, groups = T02_DRINK, data = KRHEAL,
                        lines=list(col=c('red', 'darkgreen', 'blue'), lty = c(1, 2, 3)),
                        cex.title=1, cex=0.9,
                        corner=c(1,1)),
-            main = 'BMI according to the amount of alcohol consumed by age group',
+            main = 'BMI according to the alcohol intake',
             xlab = 'BMI(kg/m^2)',
             xlim = c(15, 40),
             )
@@ -96,9 +96,9 @@ dotplot(T02_DBP ~ T02_WEIGHT_2|T02_DRINK,
         xlab = 'Weight(kg)',
         type = c('p', 'r'))
 
-############허리둘레 - 엉덩이둘레(음주량)#############
+############허리둘레/엉덩이둘레 - 나이(음주량)#############
 
-bwplot(T02_WEIGHT_2~T02_WAIST|T02_DRINK, 
+bwplot(T02_AGE_2~T02_WAIST|T02_DRINK, 
        data = KRHEAL,
        layout = c(1, 3),
        fill = "orange",
@@ -107,7 +107,7 @@ bwplot(T02_WEIGHT_2~T02_WAIST|T02_DRINK,
        main = 'Distribution of the average waist circumference according to the alcohol intake',
        notch = TRUE)
 
-bwplot(T02_WEIGHT_2~T02_HIP|T02_DRINK, 
+bwplot(T02_AGE_2~T02_HIP|T02_DRINK, 
        data = KRHEAL,
        layout = c(1, 3),
        fill = "orange",

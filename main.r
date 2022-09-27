@@ -25,6 +25,8 @@ KRHEAL$T02_DBP = ifelse(KRHEAL$T02_DBP == 99999, NA, KRHEAL$T02_DBP)
 KRHEAL$T02_WAIST = ifelse(KRHEAL$T02_WAIST == 99999, NA, KRHEAL$T02_WAIST)
 KRHEAL$T02_HIP = ifelse(KRHEAL$T02_HIP == 99999, NA, KRHEAL$T02_HIP)
 KRHEAL$T02_PULSE = ifelse(KRHEAL$T02_PULSE == 99999, NA, KRHEAL$T02_PULSE)
+KRHEAL$T02_SOJUFQ = ifelse(KRHEAL$T02_SOJUFQ == 99999, NA, KRHEAL$T02_SOJUFQ)
+KRHEAL$T02_BEERFQ = ifelse(KRHEAL$T02_BEERFQ == 99999, NA, KRHEAL$T02_BEERFQ)
 
 KRHEAL[is.na(KRHEAL$T02_WEIGHT)] = mean(KRHEAL$T02_WEIGHT, na.rm = TRUE)
 KRHEAL[is.na(KRHEAL$T02_HEIGHT)] = mean(KRHEAL$T02_HEIGHT, na.rm = TRUE)
@@ -47,6 +49,14 @@ KRHEAL$T02_WEIGHT_2 = factor(KRHEAL$T02_WEIGHT_2,
                              levels = c(4:9),
                              labels = c("4x", "5x", "6x", "7x", "8x", "9x"))
 
+KRHEAL$T02_SOJUFQ = factor(KRHEAL$T02_SOJUFQ,
+                           levels = c(0:6),
+                           labels = c("0", "1/30", "2~3/30", "1/7", "2~3/7", "4~6/7", "1"))
+
+KRHEAL$T02_BEERFQ = factor(KRHEAL$T02_BEERFQ,
+                           levels = c(0:6),
+                           labels = c("0", "1/30", "2~3/30", "1/7", "2~3/7", "4~6/7", "1"))
+
 ####################lattice - color custom######################
 xyTheme = standard.theme('pdf')
 densTheme = standard.theme('pdf')
@@ -61,7 +71,7 @@ names(bwTheme)
 names(pulseTheme)
 names(wahipTheme)
 
-xyTheme$plot.symbol$col = c("#bc7cff")
+xyTheme$plot.symbol$col = c("#7d53aa")
 xyTheme$plot.line$col = c("#bc7cff")
 xyTheme$panel.background$col = "#edeff2"
 
@@ -100,11 +110,11 @@ xyplot(T02_WEIGHT ~ T02_DRINK|T02_AGE_2,
 densityplot(~T02_BMI, groups = T02_DRINK, data = KRHEAL,
             pch = c(1, 2, 3),
             lty = c(1, 2, 3),
-            col = c('red', 'darkgreen', 'blue'),
+            col = c('#bc7cff', '#ff7ca5', '#4a9952'),
             key = list(title='alc intake', 
                        text=list(levels(KRHEAL$T02_DRINK)),
-                       points=list(pch = c(1, 2, 3), col = c('red', 'darkgreen', 'blue')),
-                       lines=list(col=c('red', 'darkgreen', 'blue'), lty = c(1, 2, 3)),
+                       points=list(pch = c(1, 2, 3), col = c('#bc7cff', '#ff7ca5', '#4a9952')),
+                       lines=list(col=c('#bc7cff', '#ff7ca5', '#4a9952'), lty = c(1, 2, 3)),
                        cex.title=1, cex=0.9,
                        corner=c(1,1)),
             main = 'BMI according to the alcohol intake',
@@ -116,6 +126,7 @@ densityplot(~T02_BMI, groups = T02_DRINK, data = KRHEAL,
 dotplot(T02_SBP ~ T02_WEIGHT_2|T02_DRINK,
         data = KRHEAL,
         groups = T02_DRINK,
+        layout = c(3, 1),
         main = 'Relationship between systolic blood pressure and body weight according to alcohol intake',
         ylab = 'Systolic blood pressure(mmHg)',
         xlab = 'Weight(kg)',
@@ -129,6 +140,7 @@ dotplot(T02_SBP ~ T02_WEIGHT_2|T02_DRINK,
 dotplot(T02_DBP ~ T02_WEIGHT_2|T02_DRINK,
         data = KRHEAL,
         groups = T02_DRINK,
+        layout = c(3, 1),
         main = 'Relationship between diastolic blood pressure and body weight according to alcohol intake',
         ylab = 'Diastolic blood pressure(mmHg)',
         xlab = 'Weight(kg)',
@@ -181,3 +193,22 @@ bwplot(T02_PULSE ~ T02_DRINK|T02_AGE_2,
        strip = strip.custom(bg = '#FFF07C',
                             par.strip.text = list(col = '#353535', cex = 0.7,
                                                   font = 4)))
+
+#######소주/맥주 마시는 빈도수에 따른 체중의 변화############
+xyplot(T02_WEIGHT ~ T02_SOJUFQ,
+       data = KRHEAL,
+       type = c('p', 'r'),
+       main = 'Weight according to the frequency of drinking soju',
+       par.settings = 'xyTheme',
+       xlab = 'Frequency of drinking soju(Times/Days)',
+       ylab = 'Weight(kg)', 
+       scales = list(fontfamily = 'serif'),)
+
+xyplot(T02_WEIGHT ~ T02_BEERFQ,
+       data = KRHEAL,
+       type = c('p', 'r'),
+       par.settings = 'xyTheme',
+       main = 'Weight according to the frequency of drinking beer',
+       xlab = 'Frequency of drinking beer(Times/Days)',
+       ylab = 'Weight(kg)',
+       scales = list(fontfamily = 'serif'),)

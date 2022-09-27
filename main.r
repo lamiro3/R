@@ -45,7 +45,43 @@ KRHEAL$T02_HEIGHT_2 = factor(KRHEAL$T02_HEIGHT_2,
 
 KRHEAL$T02_WEIGHT_2 = factor(KRHEAL$T02_WEIGHT_2,
                              levels = c(4:9),
-                             labels = c("4x(kg)", "5x(kg)", "6x(kg)", "7x(kg)", "8x(kg)", "9x(kg)"))
+                             labels = c("4x", "5x", "6x", "7x", "8x", "9x"))
+
+####################lattice - color custom######################
+xyTheme = standard.theme('pdf')
+densTheme = standard.theme('pdf')
+dotTheme = standard.theme('pdf')
+pulseTheme = standard.theme('pdf')
+wahipTheme = standard.theme('pdf')
+
+names(myTheme)
+names(densTheme)
+names(dotTheme)
+names(bwTheme)
+names(pulseTheme)
+names(wahipTheme)
+
+xyTheme$plot.symbol$col = c("#bc7cff")
+xyTheme$plot.line$col = c("#bc7cff")
+xyTheme$panel.background$col = "#edeff2"
+
+dotTheme$dot.symbol$col = c("#bc7cff", "#7cff87", "#ff7ccc")
+
+pulseTheme$box.dot$col = "#292e55"
+pulseTheme$box.rectangle$col = "#bc7cff"
+pulseTheme$box.umbrella$col = "#535daa"
+
+pulseTheme$plot.symbol$col = "#535daa"
+pulseTheme$par.title.text$font = "Lucida Console"
+pulseTheme$par.title.text$lineheight = 2
+pulseTheme$fontsize$text = 10
+
+wahipTheme$box.dot$col = "#555029"
+wahipTheme$box.rectangle$col = "#2a552d"
+wahipTheme$box.umbrella$col = "#53aa5a"
+
+wahipTheme$plot.symbol$col = "#557757"
+wahipTheme$fontsize$text = 10
 
 ################음주량 - 체중(연령별)###########################
 xyplot(T02_WEIGHT ~ T02_DRINK|T02_AGE_2, 
@@ -54,21 +90,18 @@ xyplot(T02_WEIGHT ~ T02_DRINK|T02_AGE_2,
        type = c('p', 'r'),
        main = 'Weight according to the amount of alcohol consumed by age group',
        xlab = 'the amount of alcohol consumed',
-       ylab = 'Weight(kg)')
-
+       ylab = 'Weight(kg)',
+       par.settings = 'xyTheme',
+       scales = list(fontfamily = 'serif'),
+       strip = strip.custom(bg = '#FFF07C',
+                            par.strip.text = list(col = '#353535', cex = 0.7,
+                                                  font = 4)))
 ###############음주량 - BMI##################
-xyplot(T02_BMI ~ T02_DRINK|T02_AGE_2,
-       data = KRHEAL,
-       main = 'Weight according to the alcohol intake',
-       xlab = 'the amount of alcohol consumed',
-       ylab = 'BMI(kg/m^2)',
-       layout = c(5,1))
-
 densityplot(~T02_BMI, groups = T02_DRINK, data = KRHEAL,
             pch = c(1, 2, 3),
             lty = c(1, 2, 3),
             col = c('red', 'darkgreen', 'blue'),
-            key = list(title='alc consumption', 
+            key = list(title='alc intake', 
                        text=list(levels(KRHEAL$T02_DRINK)),
                        points=list(pch = c(1, 2, 3), col = c('red', 'darkgreen', 'blue')),
                        lines=list(col=c('red', 'darkgreen', 'blue'), lty = c(1, 2, 3)),
@@ -86,7 +119,12 @@ dotplot(T02_SBP ~ T02_WEIGHT_2|T02_DRINK,
         main = 'Relationship between systolic blood pressure and body weight according to alcohol intake',
         ylab = 'Systolic blood pressure(mmHg)',
         xlab = 'Weight(kg)',
-        type = c('p', 'r'))
+        type = c('p', 'r'),
+        par.settings = 'dotTheme',
+        scales = list(fontfamily = 'serif'),
+        strip = strip.custom(bg = '#FFF07C',
+                             par.strip.text = list(col = '#353535', cex = 0.7,
+                                                   font = 4)))
 
 dotplot(T02_DBP ~ T02_WEIGHT_2|T02_DRINK,
         data = KRHEAL,
@@ -94,27 +132,42 @@ dotplot(T02_DBP ~ T02_WEIGHT_2|T02_DRINK,
         main = 'Relationship between diastolic blood pressure and body weight according to alcohol intake',
         ylab = 'Diastolic blood pressure(mmHg)',
         xlab = 'Weight(kg)',
-        type = c('p', 'r'))
+        type = c('p', 'r'),
+        par.settings = 'dotTheme',
+        scales = list(fontfamily = 'serif'),
+        strip = strip.custom(bg = '#FFF07C',
+                             par.strip.text = list(col = '#353535', cex = 0.7,
+                                                   font = 4)))
 
 ############허리둘레/엉덩이둘레 - 나이(음주량)#############
 
 bwplot(T02_AGE_2~T02_WAIST|T02_DRINK, 
        data = KRHEAL,
        layout = c(1, 3),
-       fill = "orange",
        pch = "|",
        xlab = 'Average waist circumference(cm)',
        main = 'Distribution of the average waist circumference according to the alcohol intake',
-       notch = TRUE)
+       notch = TRUE,
+       fill = '#53aa5a',
+       par.settings = 'wahipTheme',
+       scales = list(fontfamily = 'serif'),
+       strip = strip.custom(bg = '#FFF07C',
+                            par.strip.text = list(col = '#353535', cex = 0.7,
+                                                  font = 4)))
 
 bwplot(T02_AGE_2~T02_HIP|T02_DRINK, 
        data = KRHEAL,
        layout = c(1, 3),
-       fill = "orange",
        pch = "|",
        xlab = 'Average hip circumference(cm)',
        main = 'Distribution of the average hip circumference according to the alcohol intake',
-       notch = TRUE)
+       notch = TRUE,
+       fill = '#53aa5a',
+       par.settings = 'wahipTheme',
+       scales = list(fontfamily = 'serif'),
+       strip = strip.custom(bg = '#FFF07C',
+                            par.strip.text = list(col = '#353535', cex = 0.7,
+                                                  font = 4)))
 
 ################평균심박수 - 음주량(나이)####################
 bwplot(T02_PULSE ~ T02_DRINK|T02_AGE_2, 
@@ -122,4 +175,9 @@ bwplot(T02_PULSE ~ T02_DRINK|T02_AGE_2,
        layout = c(5, 1),
        main = "Average heart rate according to the alcohol intake",
        xlab = 'alcohol intake',
-       ylab = 'Average heart rate(Times/min)')
+       ylab = 'Average heart rate(Times/min)',
+       par.settings = 'pulseTheme',
+       scales = list(fontfamily = 'serif'),
+       strip = strip.custom(bg = '#FFF07C',
+                            par.strip.text = list(col = '#353535', cex = 0.7,
+                                                  font = 4)))
